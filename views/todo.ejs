@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/images/logo.png" alt="Logo" style="width: 50px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home?email=<%= email %>">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact?email=<%= email %>">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/todo?email=<%= email %>">Todo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Sign Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5 text-center" id="todoContainer">
+        <h1>Your Todos - <%= email %></h1>
+        
+        <!-- Add Todo Button -->
+        <button class="btn btn-custom btn-lg mb-3" onclick="showAddTodoForm()">Add Todo</button>
+        
+        <!-- Add Todo Form as Card -->
+        <div id="addTodoForm" class="card p-4 shadow-lg mb-3" style="display: none;">
+            <form action="/todo" method="POST">
+                <input type="hidden" name="email" value="<%= email %>" />
+                <div class="mb-3">
+                    <input type="text" name="title" class="form-control" placeholder="Title" required />
+                </div>
+                <div class="mb-3">
+                    <textarea name="description" class="form-control" placeholder="Description" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-custom btn-lg">Submit</button>
+                <button type="button" class="btn btn-secondary btn-lg" onclick="hideAddTodoForm()">Cancel</button>
+            </form>
+        </div>
+
+        <h2 class="mt-5">Your Todos</h2>
+        <div class="row">
+            <% todos.forEach((todo, index) => { %>
+                <div class="col-md-4">
+                    <div class="card todo-card mt-3">
+                        <div class="card-body">
+                            <h3><%= todo.title %></h3>
+                            <p><%= todo.description %></p>
+                            <form action="/todo/delete" method="POST" style="display:inline;">
+                                <input type="hidden" name="email" value="<%= email %>" />
+                                <input type="hidden" name="index" value="<%= index %>" />
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            <button class="btn btn-warning btn-sm" onclick="editTodoForm('<%= todo.title %>', '<%= todo.description %>', '<%= index %>')">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <!-- Edit Todo Form as Modal -->
+    <div id="editFormContainer" class="edit-form-container" style="display: none;">
+        <div id="editForm" class="card p-4 shadow-lg">
+            <h5 class="card-title">Edit Todo</h5>
+            <form action="/todo/update" method="POST">
+                <input type="hidden" name="email" value="<%= email %>" />
+                <input type="hidden" id="todoIndex" name="index" />
+                <div class="mb-3">
+                    <label for="todoTitle" class="form-label">Title</label>
+                    <input type="text" id="todoTitle" name="title" class="form-control" placeholder="Enter title" required />
+                </div>
+                <div class="mb-3">
+                    <label for="todoDescription" class="form-label">Description</label>
+                    <textarea id="todoDescription" name="description" class="form-control" placeholder="Enter description" rows="4" required></textarea>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideEditForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <span>&copy; 2024 yabuuu App</span>
+        </div>
+    </footer>
+    <script>
+        function showAddTodoForm() {
+            document.getElementById('addTodoForm').style.display = 'block';
+        }
+
+        function hideAddTodoForm() {
+            document.getElementById('addTodoForm').style.display = 'none';
+        }
+
+        function editTodoForm(title, description, index) {
+            document.getElementById('todoTitle').value = title;
+            document.getElementById('todoDescription').value = description;
+            document.getElementById('todoIndex').value = index;
+            document.getElementById('editFormContainer').style.display = 'flex';
+            document.getElementById('todoContainer').classList.add('blur');
+        }
+
+        function hideEditForm() {
+            document.getElementById('editFormContainer').style.display = 'none';
+            document.getElementById('todoContainer').classList.remove('blur');
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

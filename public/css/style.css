@@ -1,0 +1,68 @@
+body {
+    background: linear-gradient(to right, #2c3e50, #545fda);
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    margin-top: 50px;
+    margin-bottom: 150px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.todo-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-custom {
+    background-color: #ff1500;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s;
+}
+
+.btn-custom:hover {
+    background-color: #fa7d72;
+    transform: scale(1.05);
+}
+
+.navbar, .footer {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    backdrop-filter: blur(10px);
+}
+
+.edit-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6); /* Blur background */
+    z-index: 999;
+}
+
+.blur {
+    filter: blur(5px); /* Blur effect for background */
+}
+
+.footer {
+    padding: 5px 0; /* Tambah padding untuk memperbesar */
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    font-size: 1.2em; /* Tambah ukuran font */
+}
